@@ -32,7 +32,7 @@ std::vector<Genre> GenreRepository::findAll() {
         std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
     }
     std::vector<Genre> genres;
-    const char* params[PQnfields(res)];
+    char* params[PQnfields(res)];
     for (int i = 0; i < PQntuples(res); i++) {
         for (int j = 0; j < PQnfields(res); j++) {
             params[j] = PQgetvalue(res, i, j);

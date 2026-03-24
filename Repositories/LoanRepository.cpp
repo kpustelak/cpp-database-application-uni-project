@@ -56,12 +56,78 @@ bool LoanRepository::isCopyAvailable(int book_copy_id) {
 }
 
 std::vector<Loan> LoanRepository::findAllActive() {
-
+    PGresult* res = PQexec(Conn,"SELECT * FROM loans WHERE is_returned = false");
+    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
+        std::cerr<<"Błąd: "<< PQresultErrorMessage(res) << std::endl;
+    }
+    std::vector<Loan> loans;
+    for (int i=0; i<PQntuples(res); i++) {
+        char* params[PQnfields(res)];
+        for (int j=0; j<PQnfields(res); j++) {
+            params[j] = PQgetvalue(res, i, j);
+        }
+        loans.emplace_back(
+            std::stoi(params[0])
+            ,std::stoi(params[1])
+            ,std::stoi(params[2])
+            ,params[3]
+            ,params[4]
+            ,false );
+    }
+    PQclear(res);
+    return loans;
 }
 
 std::vector<Loan> LoanRepository::findOverdue() {
+    PGresult* res = PQexec(Conn,
+        "SELECT * FROM loans WHERE is_returned = false AND loan_date + INTERVAL '21 days' < CURRENT_DATE");
+    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
+        std::cerr<<"Błąd: "<< PQresultErrorMessage(res) << std::endl;
+    }
 
+    std::vector<Loan> loans;
+    for (int i=0; i<PQntuples(res); i++) {
+        char* params[PQnfields(res)];
+        for (int j=0; j<PQnfields(res); j++) {
+            params[j] = PQgetvalue(res, i, j);
+        }
+        loans.emplace_back(
+            std::stoi(params[0])
+            ,std::stoi(params[1])
+            ,std::stoi(params[2])
+            ,params[3]
+            ,params[4]
+            ,false );
+    }
+    PQclear(res);
+    return loans;
 }
 std::vector<Loan> LoanRepository::findByReaderId(int reader_id) {
+    std::string readerId = std::to_string(reader_id);
+    const char* param[1] = {
+        readerId.c_str(),
+    };
 
+    PGresult* res = PQexecParams(Conn,"SELECT * FROM loans WHERE reader_id = $1",
+                                      1,NULL,param,NULL,NULL,0);
+    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
+        std::cerr<<"Błąd: "<< PQresultErrorMessage(res) << std::endl;
+    }
+
+    std::vector<Loan> loans;
+    for (int i=0; i<PQntuples(res); i++) {
+        char* params[PQnfields(res)];
+        for (int j=0; j<PQnfields(res); j++) {
+            params[j] = PQgetvalue(res, i, j);
+        }
+        loans.emplace_back(
+            std::stoi(params[0])
+            ,std::stoi(params[1])
+            ,std::stoi(params[2])
+            ,params[3]
+            ,params[4]
+            ,false );
+    }
+    PQclear(res);
+    return loans;
 }
