@@ -99,3 +99,24 @@ void GenreRepository::deleteById(int id) {
 
     PQclear(res);
 }
+
+bool GenreRepository::doesGenreHaveBooks(int id) {
+    std::string idString = std::to_string(id);
+    const char* param[1] = {
+        idString.c_str()
+    };
+    PGresult* res = PQexecParams(Conn,
+            "SELECT 1 FROM books WHERE id_genre = $1",
+            1, NULL, param, NULL , NULL, 0
+        );
+    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
+        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
+    }
+
+    if (PQntuples(res) != 0) {
+        PQclear(res);
+        return true;
+    }
+    PQclear(res);
+    return false;
+}

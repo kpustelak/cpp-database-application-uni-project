@@ -17,6 +17,7 @@ public:
     Genre findById(int id);
     void update(Genre reader);
     void deleteById(int id);
+    bool doesGenreHaveBooks(int id);
 
     GenreRepository(PGconn* conn) {
         Conn = conn;

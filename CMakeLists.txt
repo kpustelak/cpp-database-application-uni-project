@@ -18,6 +18,8 @@ add_executable(cpp_database_application_uni_project main.cpp
         Models/BookCopy.h
         Models/Loan.h
         Repositories/LoanRepository.cpp
-        Repositories/LoanRepository.h)
+        Repositories/LoanRepository.h
+        Service/GenreService.cpp
+        Service/GenreService.h)
 
 target_link_libraries(cpp_database_application_uni_project PostgreSQL::PostgreSQL)
