@@ -7,10 +7,12 @@
 #include <iostream>
 
 void GenreService::AddNewGenre(std::string name, std::string description) {
-    if (name.size() > 2 && description.size() > 1) {
-        auto genre = Genre(0,name,description);
-        _repository.add(genre);
-    }
+    if (name.size() <= 2 || description.size() <= 1)
+        throw std::invalid_argument("Nazwa musi mieć >2 znaki, opis >1 znak");
+
+    auto genre = Genre(0,name,description);
+    _repository.add(genre);
+
 }
 
 Genre GenreService::GetGenreById(int id) {

@@ -1,5 +1,7 @@
 #include <iostream>
 #include <libpq-fe.h>
+#include "Menus/GenreMenu.h"
+#include "Service/GenreService.h"
 
 int main() {
     PGconn* conn = PQconnectdb("host=localhost port=5433 dbname=library user=root password=password");
@@ -11,6 +13,25 @@ int main() {
     }
 
     std::cout << "Połączono z bazą!" << std::endl;
+
+    GenreService genreService(conn);
+    GenreMenu genreMenu;
+
+    int choice;
+    do {
+        std::cout << "\n=== MENU GŁÓWNE ===\n";
+        std::cout << "1. Gatunki\n";
+        std::cout << "0. Wyjście\n";
+        std::cout << "Wybierz: ";
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1: genreMenu.Show(genreService); break;
+            case 0: std::cout << "Do widzenia!\n"; break;
+            default: std::cout << "Nieznana opcja.\n";
+        }
+    } while (choice != 0);
+
     PQfinish(conn);
     return 0;
 }

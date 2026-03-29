@@ -23,16 +23,16 @@ void GenreRepository::add(Genre genre) {
 
     PQclear(res);
 }
-std::vector<Genre> GenreRepository::findAll() {
-    PGresult* res = PQexec(Conn,
-            "SELECT * FROM genres"
-        );
 
-    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
+std::vector<Genre> GenreRepository::findAll() {
+    PGresult* res = PQexec(Conn, "SELECT * FROM genres");
+
+    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
         std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
     }
+
     std::vector<Genre> genres;
-    char* params[PQnfields(res)];
+    std::vector<std::string> params(PQnfields(res));
     for (int i = 0; i < PQntuples(res); i++) {
         for (int j = 0; j < PQnfields(res); j++) {
             params[j] = PQgetvalue(res, i, j);
@@ -42,28 +42,33 @@ std::vector<Genre> GenreRepository::findAll() {
     PQclear(res);
     return genres;
 }
+
 Genre GenreRepository::findById(int id) {
     std::string idString = std::to_string(id);
-    const char* param[1] = {
-        idString.c_str()
-    };
+    const char* param[1] = { idString.c_str() };
+
     PGresult* res = PQexecParams(Conn,
             "SELECT * FROM genres WHERE id = $1",
-            1, NULL, param, NULL , NULL, 0
+            1, NULL, param, NULL, NULL, 0
         );
 
-    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
+    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
         std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
     }
 
-    const char* params[PQnfields(res)];
+    if (PQntuples(res) == 0) {
+        PQclear(res);
+        return Genre(0, "", "");
+    }
+
+    std::vector<std::string> params(PQnfields(res));
     for (int i = 0; i < PQnfields(res); i++) {
         params[i] = PQgetvalue(res, 0, i);
     }
-
     PQclear(res);
     return Genre(std::stoi(params[0]), params[1], params[2]);
 }
+
 void GenreRepository::update(Genre genre) {
     std::string idString = std::to_string(genre.Id);
     const char* params[3] = {
@@ -83,14 +88,14 @@ void GenreRepository::update(Genre genre) {
 
     PQclear(res);
 }
+
 void GenreRepository::deleteById(int id) {
     std::string idString = std::to_string(id);
-    const char* param[1] = {
-        idString.c_str()
-    };
+    const char* param[1] = { idString.c_str() };
+
     PGresult* res = PQexecParams(Conn,
             "DELETE FROM genres WHERE id = $1",
-            1, NULL, param, NULL , NULL, 0
+            1, NULL, param, NULL, NULL, 0
         );
 
     if (PQresultStatus(res) != PGRES_COMMAND_OK) {
@@ -102,14 +107,14 @@ void GenreRepository::deleteById(int id) {
 
 bool GenreRepository::doesGenreHaveBooks(int id) {
     std::string idString = std::to_string(id);
-    const char* param[1] = {
-        idString.c_str()
-    };
+    const char* param[1] = { idString.c_str() };
+
     PGresult* res = PQexecParams(Conn,
             "SELECT 1 FROM books WHERE id_genre = $1",
-            1, NULL, param, NULL , NULL, 0
+            1, NULL, param, NULL, NULL, 0
         );
-    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
+
+    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
         std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
     }
 
