@@ -20,6 +20,12 @@ add_executable(cpp_database_application_uni_project main.cpp
         Repositories/LoanRepository.cpp
         Repositories/LoanRepository.h
         Service/GenreService.cpp
-        Service/GenreService.h)
+        Service/GenreService.h
+        Service/BookService.cpp
+        Service/BookService.h
+        Service/ReaderService.cpp
+        Service/ReaderService.h
+        Service/LoanService.cpp
+        Service/LoanService.h)
 
 target_link_libraries(cpp_database_application_uni_project PostgreSQL::PostgreSQL)

@@ -20,9 +20,12 @@ public:
     Book findById(int id);
     void update(Book book);
     void deleteById(int id);
+    bool doesBookExist(int id);
 
     void updateCopyCondition(int copy_id, std::string condition);
     void deleteCopy(int copy_id);
+    bool isConditionValid(std::string condition);
+    bool doesCopyExist(int copy_id);
 
     void addCopy(int book_id, std::string condition);
     std::vector<BookCopy> findCopiesByBookId(int book_id);

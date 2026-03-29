@@ -188,3 +188,51 @@ std::vector<BookCopy> BookRepository::findCopiesByBookId(int book_id) {
     PQclear(res);
     return bookCopies;
 }
+
+bool BookRepository::doesBookExist(int id) {
+    std::string idString = std::to_string(id);
+    const char* param[1] = {
+        idString.c_str()
+    };
+    PGresult* res = PQexecParams(Conn,
+            "SELECT * FROM books WHERE id = $1",
+            1, NULL, param, NULL , NULL, 0
+        );
+
+    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
+        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
+    }
+    PQclear(res);
+    if (param[0] == 0) {
+        return false;
+    }
+    return true;
+}
+
+bool BookRepository::isConditionValid(std::string condition) {
+    std::string conditionString[4] = {"poor", "average", "good", "new"};
+    for (int i = 0; i < 4; i++) {
+        if (conditionString[i] == condition) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool BookRepository::doesCopyExist(int copy_id) {
+    std::string idString = std::to_string(copy_id);
+    const char* param[1] = {
+        idString.c_str()
+    };
+    PGresult* res = PQexecParams(Conn,
+        "SELECT * FROM book_copies WHERE id = $1",
+        1, NULL, param, NULL , NULL, 0);
+    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
+        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
+    }
+    PQclear(res);
+    if (param[0] == 0) {
+        return false;
+    }
+    return true;
+}

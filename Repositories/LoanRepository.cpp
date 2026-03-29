@@ -131,3 +131,20 @@ std::vector<Loan> LoanRepository::findByReaderId(int reader_id) {
     PQclear(res);
     return loans;
 }
+
+bool LoanRepository::isLoanExistingById(int loan_id) {
+    std::string loanId = std::to_string(loan_id);
+    const char* param[1] = {
+        loanId.c_str()
+    };
+    PGresult* res = PQexecParams(Conn,"SELECT * FROM loans WHERE id = $1",
+        1, NULL, param, NULL, NULL, 0);
+    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
+        std::cerr<<"Błąd: "<< PQresultErrorMessage(res) << std::endl;
+    }
+    PQclear(res);
+    if (PQntuples(res) == 0 ) {
+        return false;
+    }
+    return true;
+}

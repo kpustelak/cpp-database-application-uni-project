@@ -17,6 +17,9 @@ public:
     void returnBook(int loan_id);
     bool isCopyAvailable(int book_copy_id);
 
+    bool isLoanExistingById(int loan_id);
+
+
     std::vector<Loan> findAllActive();
     std::vector<Loan> findOverdue();
     std::vector<Loan> findByReaderId(int reader_id);
