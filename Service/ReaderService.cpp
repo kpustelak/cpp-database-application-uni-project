@@ -20,7 +20,7 @@ Reader ReaderService::GetById(int id) {
     return _repository.findById(id);
 }
 void ReaderService::Update(int id, std::string name, std::string surname, std::string phoneNumber, std::string email) {
-    Reader r = Reader(0,name,surname,phoneNumber,email);
+    Reader r = Reader(id,name,surname,phoneNumber,email);
     _repository.update(r);
 }
 void ReaderService::Delete(int id) {
@@ -28,4 +28,7 @@ void ReaderService::Delete(int id) {
         throw std::out_of_range("Cannot find the id of the reader service");
     }
     return _repository.deleteById(id);
+}
+std::vector<Reader> ReaderService::GetByNameOrSurnameMatch(std::string name) {
+    return _repository.findByPhrase(name);
 }

@@ -2,8 +2,10 @@
 #include <libpq-fe.h>
 #include "Menus/GenreMenu.h"
 #include "Menus/BookMenu.h"
+#include "Menus/ReaderMenu.h"
 #include "Service/GenreService.h"
 #include "Service/BookService.h"
+#include "Service/ReaderService.h"
 
 int main() {
     PGconn* conn = PQconnectdb("host=localhost port=5433 dbname=library user=root password=password");
@@ -18,14 +20,17 @@ int main() {
 
     GenreService genreService(conn);
     BookService bookService(conn);
+    ReaderService readerservice(conn);
     GenreMenu genreMenu;
     BookMenu bookMenu;
+    ReaderMenu readerMenu;
 
     int choice;
     do {
         std::cout << "\n=== MENU GŁÓWNE ===\n";
         std::cout << "1. Gatunki\n";
         std::cout << "2. Książki\n";
+        std::cout << "3. Czytelnicy\n";
         std::cout << "0. Wyjście\n";
         std::cout << "Wybierz: ";
         std::cin >> choice;
@@ -33,6 +38,7 @@ int main() {
         switch (choice) {
             case 1: genreMenu.Show(genreService); break;
             case 2: bookMenu.Show(bookService, genreService); break;
+            case 3: readerMenu.Show(readerservice); break;
             case 0: std::cout << "Do widzenia!\n"; break;
             default: std::cout << "Nieznana opcja.\n";
         }

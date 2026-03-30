@@ -9,7 +9,6 @@ class BookMenu {
 private:
     Helpers helpers;
 
-    // Books
     void AddBook(BookService &b, GenreService &g);
     void GetBookById(BookService &b);
     void GetAllBooks(BookService &b);
@@ -17,7 +16,6 @@ private:
     void EditBook(BookService &b, GenreService &g);
     void DeleteBook(BookService &b);
 
-    // Copies
     void AddBookCopy(BookService &b);
     void EditBookCopy(BookService &b);
     void DeleteBookCopy(BookService &b);

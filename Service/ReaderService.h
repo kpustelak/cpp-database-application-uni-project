@@ -4,6 +4,7 @@
 
 #ifndef CPP_DATABASE_APPLICATION_UNI_PROJECT_READERSERVICE_H
 #define CPP_DATABASE_APPLICATION_UNI_PROJECT_READERSERVICE_H
+#include <format>
 #include <libpq-fe.h>
 #include <string>
 #include <vector>
@@ -20,6 +21,7 @@ public:
     Reader GetById(int id);
     void Update(int id, std::string name, std::string surname, std::string phoneNumber, std::string email);
     void Delete(int id);
+    std::vector<Reader> GetByNameOrSurnameMatch(std::string name);
 
     ReaderService(PGconn* conn): _repository(conn) {  }
 };
