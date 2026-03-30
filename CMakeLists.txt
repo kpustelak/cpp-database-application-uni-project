@@ -28,6 +28,10 @@ add_executable(cpp_database_application_uni_project main.cpp
         Service/LoanService.cpp
         Service/LoanService.h
         Menus/GenreMenu.cpp
-        Menus/GenreMenu.h)
+        Menus/GenreMenu.h
+        Menus/BookMenu.cpp
+        Menus/BookMenu.h
+        Helpers/Helpers.cpp
+        Helpers/Helpers.h)
 
 target_link_libraries(cpp_database_application_uni_project PostgreSQL::PostgreSQL)

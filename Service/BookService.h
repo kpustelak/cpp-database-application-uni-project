@@ -22,6 +22,8 @@ public:
     void UpdateBook(int id, std::string Title, std::string Author, int YearOfRelease, std::string LocationCode, int genreId);
     void DeleteBook(int id);
 
+    std::vector<Book> GetBooksByDataMatch(std::string phraseToLookFor);
+
     void AddBookCopy(int book_id, std::string condition);
     void UpdateBookCopy(int copy_id, std::string condition);
     void DeleteBookCopy(int copy_id);

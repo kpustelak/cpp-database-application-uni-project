@@ -1,12 +1,11 @@
-//
-// Created by kornel on 3/29/26.
-//
-
 #ifndef CPP_DATABASE_APPLICATION_UNI_PROJECT_GENREMENU_H
 #define CPP_DATABASE_APPLICATION_UNI_PROJECT_GENREMENU_H
 #include "../Service/GenreService.h"
+#include "../Helpers/Helpers.h"
 
 class GenreMenu {
+private:
+    Helpers helpers;
 public:
     void AddGenre(GenreService &s);
     void FindById(GenreService &s);
@@ -16,6 +15,5 @@ public:
 
     void Show(GenreService &s);
 };
-
 
 #endif //CPP_DATABASE_APPLICATION_UNI_PROJECT_GENREMENU_H
