@@ -9,7 +9,7 @@ void LoanMenu::AddLoan(LoanService &l, ReaderService &r, BookService &b) {
     helpers.ClearScreen();
 
     std::string readerPhrase = helpers.EnterData("Enter reader name or surname to search");
-    std::vector<Reader> readers = r.GetByNameOrSurnameMatch(readerPhrase);
+    std::vector<Reader> readers = r.GetByPhrase(readerPhrase);
     if (readers.empty()) {
         std::cout << "No readers found" << std::endl;
         helpers.PressEnterToContinue();
@@ -23,7 +23,7 @@ void LoanMenu::AddLoan(LoanService &l, ReaderService &r, BookService &b) {
 
     helpers.ClearScreen();
     std::string bookPhrase = helpers.EnterData("Enter book title or author to search");
-    std::vector<Book> books = b.GetBooksByDataMatch(bookPhrase);
+    std::vector<Book> books = b.GetByPhrase(bookPhrase);
     if (books.empty()) {
         std::cout << "No books found" << std::endl;
         helpers.PressEnterToContinue();
@@ -35,7 +35,7 @@ void LoanMenu::AddLoan(LoanService &l, ReaderService &r, BookService &b) {
     int bookId = helpers.EnterInt("Enter book id");
 
     helpers.ClearScreen();
-    std::vector<BookCopy> copies = b.FindBookCopies(bookId);
+    std::vector<BookCopy> copies = b.GetCopies(bookId);
     if (copies.empty()) {
         std::cout << "No copies found" << std::endl;
         helpers.PressEnterToContinue();
@@ -65,7 +65,7 @@ void LoanMenu::AddLoan(LoanService &l, ReaderService &r, BookService &b) {
 
 void LoanMenu::ReturnBook(LoanService &l) {
     helpers.ClearScreen();
-    std::vector<Loan> active = l.FindAllActive();
+    std::vector<Loan> active = l.GetActive();
     if (active.empty()) {
         std::cout << "No active loans" << std::endl;
         helpers.PressEnterToContinue();
@@ -93,7 +93,7 @@ void LoanMenu::ReturnBook(LoanService &l) {
 
 void LoanMenu::GetActiveLoans(LoanService &l) {
     helpers.ClearScreen();
-    std::vector<Loan> loans = l.FindAllActive();
+    std::vector<Loan> loans = l.GetActive();
     if (loans.empty()) {
         std::cout << "No active loans" << std::endl;
         helpers.PressEnterToContinue();
@@ -109,7 +109,7 @@ void LoanMenu::GetActiveLoans(LoanService &l) {
 
 void LoanMenu::GetOverdueLoans(LoanService &l) {
     helpers.ClearScreen();
-    std::vector<Loan> loans = l.FindOverdue();
+    std::vector<Loan> loans = l.GetOverdue();
     if (loans.empty()) {
         std::cout << "No overdue loans" << std::endl;
         helpers.PressEnterToContinue();
@@ -126,7 +126,7 @@ void LoanMenu::GetOverdueLoans(LoanService &l) {
 void LoanMenu::GetLoansByReader(LoanService &l) {
     helpers.ClearScreen();
     int readerId = helpers.EnterInt("Enter reader id");
-    std::vector<Loan> loans = l.FindByReaderId(readerId);
+    std::vector<Loan> loans = l.GetByReaderId(readerId);
     if (loans.empty()) {
         std::cout << "No loans found for this reader" << std::endl;
         helpers.PressEnterToContinue();

@@ -12,7 +12,7 @@ void GenreMenu::AddGenre(GenreService &s) {
     std::string genreName = helpers.EnterData("Enter genre name");
     std::string genreDescription = helpers.EnterData("Enter genre description");
     try {
-        s.AddNewGenre(genreName, genreDescription);
+        s.Add(genreName, genreDescription);
         std::cout << "Genre added" << std::endl;
     } catch (std::invalid_argument& e) {
         std::cerr << e.what() << std::endl;
@@ -23,7 +23,7 @@ void GenreMenu::AddGenre(GenreService &s) {
 void GenreMenu::FindById(GenreService &s) {
     int genreId = helpers.EnterInt("Enter genre id");
     try {
-        Genre genre = s.GetGenreById(genreId);
+        Genre genre = s.GetById(genreId);
         if (genre.Name.empty()) {
             std::cout << "No genre found" << std::endl;
         } else {
@@ -37,14 +37,14 @@ void GenreMenu::FindById(GenreService &s) {
 
 void GenreMenu::EditGenre(GenreService &s) {
     helpers.ClearScreen();
-    std::vector<Genre> genres = s.GetAllGenres();
+    std::vector<Genre> genres = s.GetAll();
     for (auto genre : genres) {
         std::cout << genre.Id << ". " << genre.Name << std::endl;
     }
 
     int id = helpers.EnterInt("Pick genre id number");
     try {
-        Genre genreToEdit = s.GetGenreById(id);
+        Genre genreToEdit = s.GetById(id);
         if (genreToEdit.Id == 0) {
             std::cout << "Genre not found" << std::endl;
             helpers.PressEnterToContinue();
@@ -76,7 +76,7 @@ void GenreMenu::EditGenre(GenreService &s) {
         }
         genreToEdit.Name = genreNewName;
         genreToEdit.Description = genreNewDescription;
-        s.UpdateGenreById(genreToEdit);
+        s.Update(genreToEdit);
         std::cout << "Genre updated" << std::endl;
     } catch (std::invalid_argument& e) {
         std::cerr << e.what() << std::endl;
@@ -86,7 +86,7 @@ void GenreMenu::EditGenre(GenreService &s) {
 
 void GenreMenu::ShowAllGenres(GenreService &s) {
     helpers.ClearScreen();
-    std::vector<Genre> genres = s.GetAllGenres();
+    std::vector<Genre> genres = s.GetAll();
     for (auto genre : genres) {
         std::cout << "ID:" << genre.Id << ", NAME:" << genre.Name << ", DESCRIPTION:" << genre.Description << std::endl;
     }
@@ -95,7 +95,7 @@ void GenreMenu::ShowAllGenres(GenreService &s) {
 
 void GenreMenu::DeleteGenre(GenreService &s) {
     helpers.ClearScreen();
-    std::vector<Genre> genres = s.GetAllGenres();
+    std::vector<Genre> genres = s.GetAll();
     for (auto genre : genres) {
         std::cout << genre.Id << ". " << genre.Name << std::endl;
     }
@@ -107,7 +107,7 @@ void GenreMenu::DeleteGenre(GenreService &s) {
         return;
     }
     try {
-        s.DeleteGenreById(id);
+        s.Delete(id);
         std::cout << "Genre deleted" << std::endl;
     } catch (std::invalid_argument& e) {
         std::cerr << e.what() << std::endl;

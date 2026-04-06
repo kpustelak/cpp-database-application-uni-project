@@ -4,22 +4,25 @@
 
 #ifndef CPP_DATABASE_APPLICATION_UNI_PROJECT_GENRESERVICE_H
 #define CPP_DATABASE_APPLICATION_UNI_PROJECT_GENRESERVICE_H
-#include "../../Repositories/Header/GenreRepository.h"
 
+#include <string>
+#include <vector>
+#include "../../Repositories/Header/GenreRepository.h"
 
 class GenreService {
 private:
     GenreRepository _repository;
-public:
-    void AddNewGenre(std::string name, std::string description);
-    Genre GetGenreById(int id);
-    std::vector<Genre> GetAllGenres();
-    void UpdateGenreById(Genre existingGenre);
-    void DeleteGenreById(int id);
 
+public:
+    // --- Konstruktor ---
     GenreService(PGconn* conn) : _repository(conn) {}
 
+    // --- Bazowe operacje CRUD ---
+    void Add(const std::string& name, const std::string& description);
+    Genre GetById(int id);
+    std::vector<Genre> GetAll();
+    void Update(const Genre& existingGenre);
+    void Delete(int id);
 };
-
 
 #endif //CPP_DATABASE_APPLICATION_UNI_PROJECT_GENRESERVICE_H

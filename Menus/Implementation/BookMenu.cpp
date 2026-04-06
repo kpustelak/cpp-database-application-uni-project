@@ -16,14 +16,14 @@ void BookMenu::AddBook(BookService &b, GenreService &g) {
     int bookYearOfRelease = helpers.EnterInt("Enter book year of release");
     std::string bookLocationCode = helpers.EnterData("Enter book location");
 
-    std::vector<Genre> genres = g.GetAllGenres();
+    std::vector<Genre> genres = g.GetAll();
     for (auto genre : genres) {
         std::cout << genre.Id << ". " << genre.Name << std::endl;
     }
     int genreId = helpers.EnterInt("Pick genre id");
 
     try {
-        b.AddNewBook(bookTitle, bookAuthor, bookYearOfRelease, bookLocationCode, genreId);
+        b.Add(bookTitle, bookAuthor, bookYearOfRelease, bookLocationCode, genreId);
         std::cout << "Book added" << std::endl;
     } catch (std::exception &e) {
         std::cout << e.what() << std::endl;
@@ -34,7 +34,7 @@ void BookMenu::AddBook(BookService &b, GenreService &g) {
 void BookMenu::GetBookById(BookService &b) {
     helpers.ClearScreen();
     int bookId = helpers.EnterInt("Enter book id");
-    Book book = b.GetBook(bookId);
+    Book book = b.GetById(bookId);
     if (book.Id <= 0) {
         std::cout << "There is no book with this id" << std::endl;
     } else {
@@ -45,7 +45,7 @@ void BookMenu::GetBookById(BookService &b) {
 
 void BookMenu::GetAllBooks(BookService &b) {
     helpers.ClearScreen();
-    std::vector<Book> books = b.GetAllBooks();
+    std::vector<Book> books = b.GetAll();
     for (auto book : books) {
         std::cout << book.Id << ". " << book.Title << ". " << book.Author << ". " << book.YearOfRelease << std::endl;
     }
@@ -58,7 +58,7 @@ void BookMenu::EditBook(BookService &b, GenreService &g) {
     GetBookByName(b);
 
     int bookId = helpers.EnterInt("Enter book id");
-    Book book = b.GetBook(bookId);
+    Book book = b.GetById(bookId);
 
     if (book.Id <= 0 || book.Title.empty()) {
         std::cout << "There is no book with this id" << std::endl;
@@ -94,7 +94,7 @@ void BookMenu::EditBook(BookService &b, GenreService &g) {
                 break;
             case 5: {
                 helpers.ClearScreen();
-                std::vector<Genre> genres = g.GetAllGenres();
+                std::vector<Genre> genres = g.GetAll();
                 for (auto genre : genres) {
                     std::cout << genre.Id << ". " << genre.Name << std::endl;
                 }
@@ -110,7 +110,7 @@ void BookMenu::EditBook(BookService &b, GenreService &g) {
     }
 
     try {
-        b.UpdateBook(bookId, bookTitle, bookAuthor, bookYearOfRelease, bookLocationCode, genreId);
+        b.Update(bookId, bookTitle, bookAuthor, bookYearOfRelease, bookLocationCode, genreId);
         std::cout << "Book updated" << std::endl;
     } catch (std::exception &e) {
         std::cout << e.what() << std::endl;
@@ -128,7 +128,7 @@ void BookMenu::DeleteBook(BookService &b) {
         return;
     }
     try {
-        b.DeleteBook(bookId);
+        b.Delete(bookId);
         std::cout << "Book deleted" << std::endl;
     } catch (std::exception &e) {
         std::cout << e.what() << std::endl;
@@ -138,7 +138,7 @@ void BookMenu::DeleteBook(BookService &b) {
 
 void BookMenu::GetBookByName(BookService &b) {
     std::string phraseToLookFor = helpers.EnterData("Enter book title or part of it to find");
-    std::vector<Book> books = b.GetBooksByDataMatch(phraseToLookFor);
+    std::vector<Book> books = b.GetByPhrase(phraseToLookFor);
     if (books.empty()) {
         std::cout << "No books found" << std::endl;
         return;
@@ -155,7 +155,7 @@ void BookMenu::AddBookCopy(BookService &b) {
     std::cout << "Conditions: poor, average, good, new" << std::endl;
     std::string condition = helpers.EnterData("Enter condition");
     try {
-        b.AddBookCopy(bookId, condition);
+        b.AddCopy(bookId, condition);
         std::cout << "Copy added" << std::endl;
     } catch (std::exception &e) {
         std::cout << e.what() << std::endl;
@@ -168,7 +168,7 @@ void BookMenu::EditBookCopy(BookService &b) {
     GetBookByName(b);
     int bookId = helpers.EnterInt("Enter book id to see copies");
 
-    std::vector<BookCopy> copies = b.FindBookCopies(bookId);
+    std::vector<BookCopy> copies = b.GetCopies(bookId);
     if (copies.empty()) {
         std::cout << "No copies found" << std::endl;
         helpers.PressEnterToContinue();
@@ -183,7 +183,7 @@ void BookMenu::EditBookCopy(BookService &b) {
     std::string condition = helpers.EnterData("Enter new condition");
 
     try {
-        b.UpdateBookCopy(copyId, condition);
+        b.UpdateCopy(copyId, condition);
         std::cout << "Copy updated" << std::endl;
     } catch (std::exception &e) {
         std::cout << e.what() << std::endl;
@@ -196,7 +196,7 @@ void BookMenu::DeleteBookCopy(BookService &b) {
     GetBookByName(b);
     int bookId = helpers.EnterInt("Enter book id to see copies");
 
-    std::vector<BookCopy> copies = b.FindBookCopies(bookId);
+    std::vector<BookCopy> copies = b.GetCopies(bookId);
     if (copies.empty()) {
         std::cout << "No copies found" << std::endl;
         helpers.PressEnterToContinue();
@@ -213,7 +213,7 @@ void BookMenu::DeleteBookCopy(BookService &b) {
         return;
     }
     try {
-        b.DeleteBookCopy(copyId);
+        b.DeleteCopy(copyId);
         std::cout << "Copy deleted" << std::endl;
     } catch (std::exception &e) {
         std::cout << e.what() << std::endl;
@@ -288,7 +288,7 @@ void BookMenu::ShowCopiesMenu(BookService &b) {
                 helpers.ClearScreen();
                 GetBookByName(b);
                 int bookId = helpers.EnterInt("Enter book id");
-                auto copies = b.FindBookCopies(bookId);
+                auto copies = b.GetCopies(bookId);
                 if (copies.empty()) {
                     std::cout << "No copies found" << std::endl;
                 } else {

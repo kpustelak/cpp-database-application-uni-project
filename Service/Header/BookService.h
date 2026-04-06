@@ -4,6 +4,7 @@
 
 #ifndef CPP_DATABASE_APPLICATION_UNI_PROJECT_BOOKSERVICE_H
 #define CPP_DATABASE_APPLICATION_UNI_PROJECT_BOOKSERVICE_H
+
 #include <string>
 #include <vector>
 
@@ -13,24 +14,28 @@
 
 class BookService {
 private:
-    GenreRepository _genreRepository;
     BookRepository _repository;
+    GenreRepository _genreRepository;
+
 public:
-    void AddNewBook(std::string title, std::string author, int yearOfRelease, std::string locationCode, int genreId);
-    Book GetBook(int id);
-    std::vector<Book> GetAllBooks();
-    void UpdateBook(int id, std::string Title, std::string Author, int YearOfRelease, std::string LocationCode, int genreId);
-    void DeleteBook(int id);
+    // --- Konstruktor ---
+    BookService(PGconn* conn) : _repository(conn), _genreRepository(conn) {}
 
-    std::vector<Book> GetBooksByDataMatch(std::string phraseToLookFor);
+    // --- Bazowe operacje CRUD na książkach ---
+    void Add(const std::string& title, const std::string& author, int yearOfRelease, const std::string& locationCode, int genreId);
+    Book GetById(int id);
+    std::vector<Book> GetAll();
+    void Update(int id, const std::string& title, const std::string& author, int yearOfRelease, const std::string& locationCode, int genreId);
+    void Delete(int id);
 
-    void AddBookCopy(int book_id, std::string condition);
-    void UpdateBookCopy(int copy_id, std::string condition);
-    void DeleteBookCopy(int copy_id);
-    std::vector<BookCopy> FindBookCopies(int book_id);
+    // --- Kwerendy zaawansowane ---
+    std::vector<Book> GetByPhrase(const std::string& phraseToLookFor);
 
-    BookService(PGconn* conn): _repository(conn), _genreRepository(conn) {  }
+    // --- Zarządzanie egzemplarzami (Kolekcja powiązana) ---
+    void AddCopy(int book_id, const std::string& condition);
+    void UpdateCopy(int copy_id, const std::string& condition);
+    void DeleteCopy(int copy_id);
+    std::vector<BookCopy> GetCopies(int book_id);
 };
-
 
 #endif //CPP_DATABASE_APPLICATION_UNI_PROJECT_BOOKSERVICE_H

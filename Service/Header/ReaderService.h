@@ -4,27 +4,30 @@
 
 #ifndef CPP_DATABASE_APPLICATION_UNI_PROJECT_READERSERVICE_H
 #define CPP_DATABASE_APPLICATION_UNI_PROJECT_READERSERVICE_H
-#include <format>
-#include <libpq-fe.h>
+
 #include <string>
 #include <vector>
+#include <libpq-fe.h>
 #include "../../Models/Reader.h"
 #include "../../Repositories/Header/ReaderRepository.h"
-
 
 class ReaderService {
 private:
     ReaderRepository _repository;
+
 public:
-    void Add(std::string name, std::string surname, std::string phoneNumber, std::string email);
-    std::vector<Reader> GetAll();
+    // --- Konstruktor ---
+    ReaderService(PGconn* conn) : _repository(conn) {}
+
+    // --- Bazowe operacje CRUD ---
+    void Add(const std::string& name, const std::string& surname, const std::string& phoneNumber, const std::string& email);
     Reader GetById(int id);
-    void Update(int id, std::string name, std::string surname, std::string phoneNumber, std::string email);
+    std::vector<Reader> GetAll();
+    void Update(int id, const std::string& name, const std::string& surname, const std::string& phoneNumber, const std::string& email);
     void Delete(int id);
-    std::vector<Reader> GetByNameOrSurnameMatch(std::string name);
 
-    ReaderService(PGconn* conn): _repository(conn) {  }
+    // --- Kwerendy zaawansowane ---
+    std::vector<Reader> GetByPhrase(const std::string& phraseToLookFor);
 };
-
 
 #endif //CPP_DATABASE_APPLICATION_UNI_PROJECT_READERSERVICE_H

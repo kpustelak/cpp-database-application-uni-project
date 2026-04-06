@@ -36,7 +36,7 @@ void ReaderMenu::GetReaderById(ReaderService &r) {
 }
 void ReaderMenu::GetReaderByNameOrSurname(ReaderService &r) {
     std::string dataToMatch = helpers.EnterData("Enter name or surname to find reader");
-    std::vector<Reader> readers = r.GetByNameOrSurnameMatch(dataToMatch);
+    std::vector<Reader> readers = r.GetByPhrase(dataToMatch);
     for (auto reader : readers) {
         std::cout<<reader.Id<<". "<<reader.Name<<" "<<reader.Surname<<" "<<reader.PhoneNumber<<" "<<reader.Email<<std::endl;
     }
