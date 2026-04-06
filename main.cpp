@@ -3,9 +3,12 @@
 #include "Menus/GenreMenu.h"
 #include "Menus/BookMenu.h"
 #include "Menus/ReaderMenu.h"
+#include "Menus/LoanMenu.h"
 #include "Service/GenreService.h"
 #include "Service/BookService.h"
 #include "Service/ReaderService.h"
+#include "Service/LoanService.h"
+#include "Helpers/Helpers.h"
 
 int main() {
     PGconn* conn = PQconnectdb("host=localhost port=5433 dbname=library user=root password=password");
@@ -16,29 +19,34 @@ int main() {
         return 1;
     }
 
-    std::cout << "Połączono z bazą!" << std::endl;
-
     GenreService genreService(conn);
     BookService bookService(conn);
-    ReaderService readerservice(conn);
+    ReaderService readerService(conn);
+    LoanService loanService(conn);
+
     GenreMenu genreMenu;
     BookMenu bookMenu;
     ReaderMenu readerMenu;
+    LoanMenu loanMenu;
+    Helpers helpers;
 
     int choice;
     do {
+        helpers.ClearScreen();
         std::cout << "\n=== MENU GŁÓWNE ===\n";
         std::cout << "1. Gatunki\n";
         std::cout << "2. Książki\n";
         std::cout << "3. Czytelnicy\n";
+        std::cout << "4. Wypożyczenia\n";
         std::cout << "0. Wyjście\n";
-        std::cout << "Wybierz: ";
-        std::cin >> choice;
+
+        choice = helpers.EnterInt("Wybierz");
 
         switch (choice) {
             case 1: genreMenu.Show(genreService); break;
             case 2: bookMenu.Show(bookService, genreService); break;
-            case 3: readerMenu.Show(readerservice); break;
+            case 3: readerMenu.Show(readerService); break;
+            case 4: loanMenu.Show(loanService, readerService, bookService); break;
             case 0: std::cout << "Do widzenia!\n"; break;
             default: std::cout << "Nieznana opcja.\n";
         }
