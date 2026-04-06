@@ -6,11 +6,13 @@
 #define CPP_DATABASE_APPLICATION_UNI_PROJECT_GENREREPOSITORY_H
 #include <libpq-fe.h>
 #include <vector>
-#include "../Models/Genre.h"
+#include "../../Models/Genre.h"
+#include "../../Helpers/Header/RepositoryHelpers.h"
 
 class GenreRepository {
 private:
     PGconn* Conn ;
+    RepositoryHelpers helpers;
 public:
     void add(Genre genre);
     std::vector<Genre> findAll();

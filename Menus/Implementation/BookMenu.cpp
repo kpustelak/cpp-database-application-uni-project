@@ -2,11 +2,11 @@
 // Created by kornel on 3/30/26.
 //
 
-#include "BookMenu.h"
+#include "../Header/BookMenu.h"
 
 #include <iostream>
-#include "../Helpers/Helpers.h"
-#include "../Service/GenreService.h"
+#include "../../Helpers/Header/Helpers.h"
+#include "../../Service/Header/GenreService.h"
 
 
 void BookMenu::AddBook(BookService &b, GenreService &g) {

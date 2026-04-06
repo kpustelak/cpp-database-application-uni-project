@@ -1,9 +1,4 @@
-//
-// Created by kornel on 3/19/26.
-//
-
-#include "BookRepository.h"
-
+#include "../Header/BookRepository.h"
 #include <iostream>
 
 void BookRepository::add(Book book) {
@@ -23,21 +18,15 @@ void BookRepository::add(Book book) {
             5, NULL, params, NULL, NULL, 0
         );
 
-    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-    }
-
+    helpers.PGResCommandHandler(res);
     PQclear(res);
 }
 
 std::vector<Book> BookRepository::findAll() {
-    PGresult* res = PQexec(Conn,
-            "SELECT * FROM books"
-        );
+    PGresult* res = PQexec(Conn, "SELECT * FROM books");
 
-    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-    }
+    helpers.PGResCommandTuple(res);
+
     std::vector<Book> books;
     std::vector<std::string> params(PQnfields(res));
     for (int i = 0; i < PQntuples(res); i++) {
@@ -50,19 +39,17 @@ std::vector<Book> BookRepository::findAll() {
     PQclear(res);
     return books;
 }
+
 Book BookRepository::findById(int id) {
     std::string idString = std::to_string(id);
-    const char* param[1] = {
-        idString.c_str()
-    };
+    const char* param[1] = { idString.c_str() };
+
     PGresult* res = PQexecParams(Conn,
             "SELECT * FROM books WHERE id = $1",
             1, NULL, param, NULL , NULL, 0
         );
 
-    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-    }
+    helpers.PGResCommandTuple(res);
 
     if (PQntuples(res) == 0) {
         PQclear(res);
@@ -78,6 +65,7 @@ Book BookRepository::findById(int id) {
     return Book(std::stoi(params[0]), params[1], params[2],
             std::stoi(params[3]), params[4], std::stoi(params[5]));
 }
+
 void BookRepository::update(Book book) {
     std::string idString = std::to_string(book.Id);
     std::string yearOfReleaseString = std::to_string(book.YearOfRelease);
@@ -97,26 +85,20 @@ void BookRepository::update(Book book) {
             6, NULL, params, NULL, NULL, 0
         );
 
-    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-    }
-
+    helpers.PGResCommandHandler(res);
     PQclear(res);
 }
+
 void BookRepository::deleteById(int id) {
     std::string idString = std::to_string(id);
-    const char* param[1] = {
-        idString.c_str()
-    };
+    const char* param[1] = { idString.c_str() };
+
     PGresult* res = PQexecParams(Conn,
             "DELETE FROM books WHERE id = $1",
             1, NULL, param, NULL , NULL, 0
         );
 
-    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-    }
-
+    helpers.PGResCommandHandler(res);
     PQclear(res);
 }
 
@@ -132,10 +114,7 @@ void BookRepository::addCopy(int book_id, std::string condition) {
             2, NULL, param, NULL , NULL, 0
         );
 
-    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-    }
-
+    helpers.PGResCommandHandler(res);
     PQclear(res);
 }
 
@@ -148,39 +127,33 @@ void BookRepository::updateCopyCondition(int copy_id, std::string condition) {
     PGresult* res = PQexecParams(Conn,
         "UPDATE book_copies SET condition = $1 WHERE id = $2",
         2, NULL, param, NULL , NULL, 0);
-    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-    }
+
+    helpers.PGResCommandHandler(res);
     PQclear(res);
 }
+
 void BookRepository::deleteCopy(int copy_id) {
     std::string copyIdString = std::to_string(copy_id);
-    const char* param[1] = {
-        copyIdString.c_str()
-    };
+    const char* param[1] = { copyIdString.c_str() };
+
     PGresult* res = PQexecParams(Conn,
             "DELETE FROM book_copies WHERE id = $1",
             1, NULL, param, NULL , NULL, 0
         );
 
-    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-    }
-
+    helpers.PGResCommandHandler(res);
     PQclear(res);
 }
 
 std::vector<BookCopy> BookRepository::findCopiesByBookId(int book_id) {
     std::string idString = std::to_string(book_id);
-    const char* param[1] = {
-        idString.c_str()
-    };
+    const char* param[1] = { idString.c_str() };
+
     PGresult* res = PQexecParams(Conn,
         "SELECT * FROM book_copies WHERE id_book = $1",
         1, NULL, param, NULL , NULL, 0);
-    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-    }
+
+    helpers.PGResCommandTuple(res);
 
     std::vector<BookCopy> bookCopies;
     std::vector<std::string> params(PQnfields(res));
@@ -196,19 +169,14 @@ std::vector<BookCopy> BookRepository::findCopiesByBookId(int book_id) {
 
 bool BookRepository::doesBookExist(int id) {
     std::string idString = std::to_string(id);
-    const char* param[1] = {
-        idString.c_str()
-    };
+    const char* param[1] = { idString.c_str() };
+
     PGresult* res = PQexecParams(Conn,
             "SELECT * FROM books WHERE id = $1",
             1, NULL, param, NULL , NULL, 0
         );
 
-    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-        PQclear(res);
-        return false;
-    }
+    helpers.PGResCommandTuple(res);
     bool exists = PQntuples(res) > 0;
     PQclear(res);
     return exists;
@@ -226,17 +194,13 @@ bool BookRepository::isConditionValid(std::string condition) {
 
 bool BookRepository::doesCopyExist(int copy_id) {
     std::string idString = std::to_string(copy_id);
-    const char* param[1] = {
-        idString.c_str()
-    };
+    const char* param[1] = { idString.c_str() };
+
     PGresult* res = PQexecParams(Conn,
         "SELECT * FROM book_copies WHERE id = $1",
         1, NULL, param, NULL , NULL, 0);
-    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-        PQclear(res);
-        return false;
-    }
+
+    helpers.PGResCommandTuple(res);
     bool exists = PQntuples(res) > 0;
     PQclear(res);
     return exists;

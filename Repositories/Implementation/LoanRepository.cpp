@@ -1,8 +1,4 @@
-//
-// Created by kornel on 3/19/26.
-//
-
-#include "LoanRepository.h"
+#include "../Header/LoanRepository.h"
 #include <iostream>
 
 void LoanRepository::add(int reader_id, int book_copies_id) {
@@ -15,9 +11,8 @@ void LoanRepository::add(int reader_id, int book_copies_id) {
     PGresult* res = PQexecParams(Conn,
         "INSERT INTO loans (reader_id, book_copies_id) VALUES ($1, $2)",
         2, NULL, param, NULL, NULL, 0);
-    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-    }
+
+    helpers.PGResCommandHandler(res);
     PQclear(res);
 }
 
@@ -27,9 +22,8 @@ void LoanRepository::returnBook(int loan_id) {
     PGresult* res = PQexecParams(Conn,
         "UPDATE loans SET is_returned = TRUE, return_date = CURRENT_DATE WHERE id = $1",
         1, NULL, param, NULL, NULL, 0);
-    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-    }
+
+    helpers.PGResCommandHandler(res);
     PQclear(res);
 }
 
@@ -39,11 +33,8 @@ bool LoanRepository::isCopyAvailable(int book_copy_id) {
     PGresult* res = PQexecParams(Conn,
         "SELECT 1 FROM loans WHERE book_copies_id = $1 AND is_returned = false",
         1, NULL, param, NULL, NULL, 0);
-    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-        PQclear(res);
-        return false;
-    }
+
+    helpers.PGResCommandTuple(res);
     bool borrowed = PQntuples(res) > 0;
     PQclear(res);
     return !borrowed;
@@ -55,11 +46,8 @@ bool LoanRepository::isLoanExistingById(int loan_id) {
     PGresult* res = PQexecParams(Conn,
         "SELECT 1 FROM loans WHERE id = $1",
         1, NULL, param, NULL, NULL, 0);
-    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-        PQclear(res);
-        return false;
-    }
+
+    helpers.PGResCommandTuple(res);
     bool exists = PQntuples(res) > 0;
     PQclear(res);
     return exists;
@@ -67,9 +55,9 @@ bool LoanRepository::isLoanExistingById(int loan_id) {
 
 std::vector<Loan> LoanRepository::findAllActive() {
     PGresult* res = PQexec(Conn, "SELECT * FROM loans WHERE is_returned = false");
-    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-    }
+
+    helpers.PGResCommandTuple(res);
+
     std::vector<Loan> loans;
     std::vector<std::string> params(PQnfields(res));
     for (int i = 0; i < PQntuples(res); i++) {
@@ -92,9 +80,9 @@ std::vector<Loan> LoanRepository::findAllActive() {
 std::vector<Loan> LoanRepository::findOverdue() {
     PGresult* res = PQexec(Conn,
         "SELECT * FROM loans WHERE is_returned = false AND loan_date + INTERVAL '21 days' < CURRENT_DATE");
-    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-    }
+
+    helpers.PGResCommandTuple(res);
+
     std::vector<Loan> loans;
     std::vector<std::string> params(PQnfields(res));
     for (int i = 0; i < PQntuples(res); i++) {
@@ -120,9 +108,9 @@ std::vector<Loan> LoanRepository::findByReaderId(int reader_id) {
     PGresult* res = PQexecParams(Conn,
         "SELECT * FROM loans WHERE reader_id = $1",
         1, NULL, param, NULL, NULL, 0);
-    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-    }
+
+    helpers.PGResCommandTuple(res);
+
     std::vector<Loan> loans;
     std::vector<std::string> params(PQnfields(res));
     for (int i = 0; i < PQntuples(res); i++) {

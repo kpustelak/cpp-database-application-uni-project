@@ -4,7 +4,7 @@
 
 #ifndef CPP_DATABASE_APPLICATION_UNI_PROJECT_LOANSERVICE_H
 #define CPP_DATABASE_APPLICATION_UNI_PROJECT_LOANSERVICE_H
-#include "../Repositories/LoanRepository.h"
+#include "../../Repositories/Header/LoanRepository.h"
 
 
 class LoanService {

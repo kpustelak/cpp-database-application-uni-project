@@ -1,14 +1,14 @@
 #include <iostream>
 #include <libpq-fe.h>
-#include "Menus/GenreMenu.h"
-#include "Menus/BookMenu.h"
-#include "Menus/ReaderMenu.h"
-#include "Menus/LoanMenu.h"
-#include "Service/GenreService.h"
-#include "Service/BookService.h"
-#include "Service/ReaderService.h"
-#include "Service/LoanService.h"
-#include "Helpers/Helpers.h"
+#include "Menus/Header/GenreMenu.h"
+#include "Menus/Header/BookMenu.h"
+#include "Menus/Header/ReaderMenu.h"
+#include "Menus/Header/LoanMenu.h"
+#include "Service/Header/GenreService.h"
+#include "Service/Header/BookService.h"
+#include "Service/Header/ReaderService.h"
+#include "Service/Header/LoanService.h"
+#include "Helpers/Header/Helpers.h"
 
 int main() {
     PGconn* conn = PQconnectdb("host=localhost port=5433 dbname=library user=root password=password");

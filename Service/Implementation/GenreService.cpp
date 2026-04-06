@@ -2,7 +2,7 @@
 // Created by kornel on 3/24/26.
 //
 
-#include "GenreService.h"
+#include "../Header/GenreService.h"
 
 #include <iostream>
 

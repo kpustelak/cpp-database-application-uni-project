@@ -8,8 +8,8 @@
 #include <libpq-fe.h>
 #include <string>
 #include <vector>
-#include "../Models/Reader.h"
-#include "../Repositories/ReaderRepository.h"
+#include "../../Models/Reader.h"
+#include "../../Repositories/Header/ReaderRepository.h"
 
 
 class ReaderService {

@@ -1,8 +1,8 @@
 #ifndef CPP_DATABASE_APPLICATION_UNI_PROJECT_BOOKMENU_H
 #define CPP_DATABASE_APPLICATION_UNI_PROJECT_BOOKMENU_H
-#include "../Helpers/Helpers.h"
-#include "../Service/BookService.h"
-#include "../Service/GenreService.h"
+#include "../../Helpers/Header/Helpers.h"
+#include "../../Service/Header/BookService.h"
+#include "../../Service/Header/GenreService.h"
 
 
 class BookMenu {

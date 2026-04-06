@@ -2,7 +2,7 @@
 // Created by kornel on 3/29/26.
 //
 
-#include "GenreMenu.h"
+#include "../Header/GenreMenu.h"
 
 #include <iostream>
 #include <limits>

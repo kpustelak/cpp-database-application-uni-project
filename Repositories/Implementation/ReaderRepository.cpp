@@ -1,4 +1,4 @@
-#include "ReaderRepository.h"
+#include "../Header/ReaderRepository.h"
 #include <iostream>
 
 void ReaderRepository::add(Reader reader) {
@@ -11,17 +11,16 @@ void ReaderRepository::add(Reader reader) {
     PGresult* res = PQexecParams(Conn,
         "INSERT INTO readers (name, surname, phone_number, email) VALUES ($1, $2, $3, $4)",
         4, NULL, params, NULL, NULL, 0);
-    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-    }
+
+    helpers.PGResCommandHandler(res);
     PQclear(res);
 }
 
 std::vector<Reader> ReaderRepository::findAll() {
     PGresult* res = PQexec(Conn, "SELECT * FROM readers");
-    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-    }
+
+    helpers.PGResCommandTuple(res);
+
     std::vector<Reader> readers;
     std::vector<std::string> params(PQnfields(res));
     for (int i = 0; i < PQntuples(res); i++) {
@@ -40,9 +39,9 @@ Reader ReaderRepository::findById(int id) {
     PGresult* res = PQexecParams(Conn,
         "SELECT * FROM readers WHERE id = $1",
         1, NULL, param, NULL, NULL, 0);
-    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-    }
+
+    helpers.PGResCommandTuple(res);
+
     if (PQntuples(res) == 0) {
         PQclear(res);
         return Reader(0, "", "", "", "");
@@ -67,9 +66,8 @@ void ReaderRepository::update(Reader reader) {
     PGresult* res = PQexecParams(Conn,
         "UPDATE readers SET name = $1, surname = $2, phone_number = $3, email = $4 WHERE id = $5",
         5, NULL, params, NULL, NULL, 0);
-    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-    }
+
+    helpers.PGResCommandHandler(res);
     PQclear(res);
 }
 
@@ -79,9 +77,8 @@ void ReaderRepository::deleteById(int id) {
     PGresult* res = PQexecParams(Conn,
         "DELETE FROM readers WHERE id = $1",
         1, NULL, param, NULL, NULL, 0);
-    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-    }
+
+    helpers.PGResCommandHandler(res);
     PQclear(res);
 }
 
@@ -91,9 +88,9 @@ std::vector<Reader> ReaderRepository::findByPhrase(std::string phrase) {
     PGresult* res = PQexecParams(Conn,
         "SELECT * FROM readers WHERE name ILIKE $1 OR surname ILIKE $2",
         2, NULL, params, NULL, NULL, 0);
-    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-    }
+
+    helpers.PGResCommandTuple(res);
+
     std::vector<Reader> readers;
     std::vector<std::string> row(PQnfields(res));
     for (int i = 0; i < PQntuples(res); i++) {
@@ -112,11 +109,8 @@ bool ReaderRepository::doesReaderExist(int id) {
     PGresult* res = PQexecParams(Conn,
         "SELECT 1 FROM readers WHERE id = $1",
         1, NULL, param, NULL, NULL, 0);
-    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-        PQclear(res);
-        return false;
-    }
+
+    helpers.PGResCommandTuple(res);
     bool exists = PQntuples(res) > 0;
     PQclear(res);
     return exists;

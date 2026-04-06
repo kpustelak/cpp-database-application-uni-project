@@ -3,11 +3,13 @@
 #include <libpq-fe.h>
 #include <vector>
 #include <string>
-#include "../Models/Reader.h"
+#include "../../Models/Reader.h"
+#include "../../Helpers/Header/RepositoryHelpers.h"
 
 class ReaderRepository {
 private:
     PGconn* Conn;
+    RepositoryHelpers helpers;
 public:
     void add(Reader reader);
     std::vector<Reader> findAll();

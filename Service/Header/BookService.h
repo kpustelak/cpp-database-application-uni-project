@@ -7,9 +7,9 @@
 #include <string>
 #include <vector>
 
-#include "../Models/Book.h"
-#include "../Repositories/BookRepository.h"
-#include "../Repositories/GenreRepository.h"
+#include "../../Models/Book.h"
+#include "../../Repositories/Header/BookRepository.h"
+#include "../../Repositories/Header/GenreRepository.h"
 
 class BookService {
 private:

@@ -4,8 +4,8 @@
 
 #ifndef CPP_DATABASE_APPLICATION_UNI_PROJECT_READERMENU_H
 #define CPP_DATABASE_APPLICATION_UNI_PROJECT_READERMENU_H
-#include "../Helpers/Helpers.h"
-#include "../Service/ReaderService.h"
+#include "../../Helpers/Header/Helpers.h"
+#include "../../Service/Header/ReaderService.h"
 
 
 class ReaderMenu {

@@ -8,12 +8,14 @@
 #include <libpq-fe.h>
 #include <vector>
 
-#include "../Models/Book.h"
-#include "../Models/BookCopy.h"
+#include "../../Helpers/Header/RepositoryHelpers.h"
+#include "../../Models/Book.h"
+#include "../../Models/BookCopy.h"
 
 class BookRepository {
 private:
     PGconn* Conn ;
+    RepositoryHelpers helpers;
 public:
     void add(Book book);
     std::vector<Book> findAll();

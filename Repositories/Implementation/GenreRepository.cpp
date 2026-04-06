@@ -2,7 +2,7 @@
 // Created by kornel on 3/19/26.
 //
 
-#include "GenreRepository.h"
+#include "../Header/GenreRepository.h"
 
 #include <iostream>
 
@@ -17,9 +17,7 @@ void GenreRepository::add(Genre genre) {
             2, NULL, params, NULL, NULL, 0
         );
 
-    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-    }
+    helpers.PGResCommandHandler(res);
 
     PQclear(res);
 }
@@ -27,9 +25,7 @@ void GenreRepository::add(Genre genre) {
 std::vector<Genre> GenreRepository::findAll() {
     PGresult* res = PQexec(Conn, "SELECT * FROM genres");
 
-    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-    }
+    helpers.PGResCommandTuple(res);
 
     std::vector<Genre> genres;
     std::vector<std::string> params(PQnfields(res));
@@ -52,9 +48,7 @@ Genre GenreRepository::findById(int id) {
             1, NULL, param, NULL, NULL, 0
         );
 
-    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-    }
+    helpers.PGResCommandTuple(res);
 
     if (PQntuples(res) == 0) {
         PQclear(res);
@@ -82,10 +76,7 @@ void GenreRepository::update(Genre genre) {
             3, NULL, params, NULL, NULL, 0
         );
 
-    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-    }
-
+    helpers.PGResCommandHandler(res);
     PQclear(res);
 }
 
@@ -98,10 +89,7 @@ void GenreRepository::deleteById(int id) {
             1, NULL, param, NULL, NULL, 0
         );
 
-    if (PQresultStatus(res) != PGRES_COMMAND_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-    }
-
+    helpers.PGResCommandHandler(res);
     PQclear(res);
 }
 
@@ -114,9 +102,7 @@ bool GenreRepository::doesGenreHaveBooks(int id) {
             1, NULL, param, NULL, NULL, 0
         );
 
-    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
-        std::cerr << "Błąd: " << PQresultErrorMessage(res) << std::endl;
-    }
+    helpers.PGResCommandTuple(res);
 
     if (PQntuples(res) != 0) {
         PQclear(res);

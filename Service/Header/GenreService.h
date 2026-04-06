@@ -4,7 +4,7 @@
 
 #ifndef CPP_DATABASE_APPLICATION_UNI_PROJECT_GENRESERVICE_H
 #define CPP_DATABASE_APPLICATION_UNI_PROJECT_GENRESERVICE_H
-#include "../Repositories/GenreRepository.h"
+#include "../../Repositories/Header/GenreRepository.h"
 
 
 class GenreService {

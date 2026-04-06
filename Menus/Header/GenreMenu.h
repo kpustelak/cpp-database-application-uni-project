@@ -1,7 +1,7 @@
 #ifndef CPP_DATABASE_APPLICATION_UNI_PROJECT_GENREMENU_H
 #define CPP_DATABASE_APPLICATION_UNI_PROJECT_GENREMENU_H
-#include "../Service/GenreService.h"
-#include "../Helpers/Helpers.h"
+#include "../../Service/Header/GenreService.h"
+#include "../../Helpers/Header/Helpers.h"
 
 class GenreMenu {
 private:

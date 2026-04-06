@@ -7,11 +7,13 @@
 #include <libpq-fe.h>
 #include <vector>
 
-#include "../Models/Loan.h"
+#include "../../Models/Loan.h"
+#include "../../Helpers/Header/RepositoryHelpers.h"
 
 class LoanRepository {
 private:
     PGconn* Conn;
+    RepositoryHelpers helpers;
 public:
     void add(int reader_id, int book_copies_id);
     void returnBook(int loan_id);
