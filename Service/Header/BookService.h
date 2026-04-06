@@ -18,20 +18,16 @@ private:
     GenreRepository _genreRepository;
 
 public:
-    // --- Konstruktor ---
     BookService(PGconn* conn) : _repository(conn), _genreRepository(conn) {}
 
-    // --- Bazowe operacje CRUD na książkach ---
     void Add(const std::string& title, const std::string& author, int yearOfRelease, const std::string& locationCode, int genreId);
     Book GetById(int id);
     std::vector<Book> GetAll();
     void Update(int id, const std::string& title, const std::string& author, int yearOfRelease, const std::string& locationCode, int genreId);
     void Delete(int id);
 
-    // --- Kwerendy zaawansowane ---
     std::vector<Book> GetByPhrase(const std::string& phraseToLookFor);
 
-    // --- Zarządzanie egzemplarzami (Kolekcja powiązana) ---
     void AddCopy(int book_id, const std::string& condition);
     void UpdateCopy(int copy_id, const std::string& condition);
     void DeleteCopy(int copy_id);

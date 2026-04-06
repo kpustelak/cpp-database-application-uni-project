@@ -39,6 +39,7 @@ add_executable(cpp_database_application_uni_project main.cpp
         Menus/Header/LoanMenu.h
         Helpers/Implementation/RepositoryHelpers.cpp
         Helpers/Header/RepositoryHelpers.h
+        p1.cpp
 )
 
 target_link_libraries(cpp_database_application_uni_project PostgreSQL::PostgreSQL)

@@ -14,10 +14,8 @@ private:
     GenreRepository _repository;
 
 public:
-    // --- Konstruktor ---
     GenreService(PGconn* conn) : _repository(conn) {}
 
-    // --- Bazowe operacje CRUD ---
     void Add(const std::string& name, const std::string& description);
     Genre GetById(int id);
     std::vector<Genre> GetAll();

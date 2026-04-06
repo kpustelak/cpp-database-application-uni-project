@@ -13,14 +13,11 @@ private:
     LoanRepository _repository;
 
 public:
-    // --- Konstruktor ---
     LoanService(PGconn* conn) : _repository(conn) {}
 
-    // --- Operacje dziedzinowe wypożyczeń ---
     void Add(int reader_id, int book_copies_id);
     void ReturnBook(int loan_id);
 
-    // --- Kwerendy stanu i weryfikacji ---
     bool IsCopyAvailable(int book_copy_id);
     std::vector<Loan> GetActive();
     std::vector<Loan> GetOverdue();
