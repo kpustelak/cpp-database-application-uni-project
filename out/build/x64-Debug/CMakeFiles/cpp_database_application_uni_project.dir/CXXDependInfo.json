@@ -1,0 +1,101 @@
+{
+	"bmi-installation" : null,
+	"compiler-frontend-variant" : "MSVC",
+	"compiler-id" : "MSVC",
+	"compiler-simulate-id" : "",
+	"config" : "Debug",
+	"cxx-modules" : {},
+	"database-info" : null,
+	"dir-cur-bld" : "C:/Users/korne/source/repos/dotnetblog/cpp-database-application-uni-project/out/build/x64-Debug",
+	"dir-cur-src" : "C:/Users/korne/source/repos/dotnetblog/cpp-database-application-uni-project",
+	"dir-top-bld" : "C:/Users/korne/source/repos/dotnetblog/cpp-database-application-uni-project/out/build/x64-Debug",
+	"dir-top-src" : "C:/Users/korne/source/repos/dotnetblog/cpp-database-application-uni-project",
+	"exports" : [],
+	"forward-modules-from-target-dirs" : [],
+	"include-dirs" : 
+	[
+		"C:\\vcpkg\\installed\\x64-windows\\include",
+		"C:\\vcpkg\\installed\\x64-windows\\include\\postgresql\\server"
+	],
+	"language" : "CXX",
+	"linked-target-dirs" : [],
+	"module-dir" : "C:/Users/korne/source/repos/dotnetblog/cpp-database-application-uni-project/out/build/x64-Debug/CMakeFiles/cpp_database_application_uni_project.dir",
+	"sources" : 
+	{
+		"CMakeFiles/cpp_database_application_uni_project.dir/Helpers/Implementation/Helpers.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/korne/source/repos/dotnetblog/cpp-database-application-uni-project/Helpers/Implementation/Helpers.cpp"
+		},
+		"CMakeFiles/cpp_database_application_uni_project.dir/Helpers/Implementation/RepositoryHelpers.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/korne/source/repos/dotnetblog/cpp-database-application-uni-project/Helpers/Implementation/RepositoryHelpers.cpp"
+		},
+		"CMakeFiles/cpp_database_application_uni_project.dir/Menus/Implementation/BookMenu.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/korne/source/repos/dotnetblog/cpp-database-application-uni-project/Menus/Implementation/BookMenu.cpp"
+		},
+		"CMakeFiles/cpp_database_application_uni_project.dir/Menus/Implementation/GenreMenu.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/korne/source/repos/dotnetblog/cpp-database-application-uni-project/Menus/Implementation/GenreMenu.cpp"
+		},
+		"CMakeFiles/cpp_database_application_uni_project.dir/Menus/Implementation/LoanMenu.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/korne/source/repos/dotnetblog/cpp-database-application-uni-project/Menus/Implementation/LoanMenu.cpp"
+		},
+		"CMakeFiles/cpp_database_application_uni_project.dir/Menus/Implementation/ReaderMenu.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/korne/source/repos/dotnetblog/cpp-database-application-uni-project/Menus/Implementation/ReaderMenu.cpp"
+		},
+		"CMakeFiles/cpp_database_application_uni_project.dir/Repositories/Implementation/BookRepository.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/korne/source/repos/dotnetblog/cpp-database-application-uni-project/Repositories/Implementation/BookRepository.cpp"
+		},
+		"CMakeFiles/cpp_database_application_uni_project.dir/Repositories/Implementation/GenreRepository.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/korne/source/repos/dotnetblog/cpp-database-application-uni-project/Repositories/Implementation/GenreRepository.cpp"
+		},
+		"CMakeFiles/cpp_database_application_uni_project.dir/Repositories/Implementation/LoanRepository.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/korne/source/repos/dotnetblog/cpp-database-application-uni-project/Repositories/Implementation/LoanRepository.cpp"
+		},
+		"CMakeFiles/cpp_database_application_uni_project.dir/Repositories/Implementation/ReaderRepository.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/korne/source/repos/dotnetblog/cpp-database-application-uni-project/Repositories/Implementation/ReaderRepository.cpp"
+		},
+		"CMakeFiles/cpp_database_application_uni_project.dir/Service/Implementation/BookService.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/korne/source/repos/dotnetblog/cpp-database-application-uni-project/Service/Implementation/BookService.cpp"
+		},
+		"CMakeFiles/cpp_database_application_uni_project.dir/Service/Implementation/GenreService.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/korne/source/repos/dotnetblog/cpp-database-application-uni-project/Service/Implementation/GenreService.cpp"
+		},
+		"CMakeFiles/cpp_database_application_uni_project.dir/Service/Implementation/LoanService.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/korne/source/repos/dotnetblog/cpp-database-application-uni-project/Service/Implementation/LoanService.cpp"
+		},
+		"CMakeFiles/cpp_database_application_uni_project.dir/Service/Implementation/ReaderService.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/korne/source/repos/dotnetblog/cpp-database-application-uni-project/Service/Implementation/ReaderService.cpp"
+		},
+		"CMakeFiles/cpp_database_application_uni_project.dir/main.cpp.obj" : 
+		{
+			"language" : "CXX",
+			"source" : "C:/Users/korne/source/repos/dotnetblog/cpp-database-application-uni-project/main.cpp"
+		}
+	}
+}

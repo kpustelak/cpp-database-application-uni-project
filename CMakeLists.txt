@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 4.0)
+cmake_minimum_required(VERSION 3.31)
 project(cpp_database_application_uni_project)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -39,7 +39,6 @@ add_executable(cpp_database_application_uni_project main.cpp
         Menus/Header/LoanMenu.h
         Helpers/Implementation/RepositoryHelpers.cpp
         Helpers/Header/RepositoryHelpers.h
-        p1.cpp
 )
 
 target_link_libraries(cpp_database_application_uni_project PostgreSQL::PostgreSQL)

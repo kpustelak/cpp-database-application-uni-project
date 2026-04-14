@@ -1,0 +1,31 @@
+ninja_dyndep_version = 1.0
+build CMakeFiles\cpp_database_application_uni_project.dir\main.cpp.obj: dyndep
+
+build CMakeFiles\cpp_database_application_uni_project.dir\Repositories\Implementation\ReaderRepository.cpp.obj: dyndep
+
+build CMakeFiles\cpp_database_application_uni_project.dir\Repositories\Implementation\GenreRepository.cpp.obj: dyndep
+
+build CMakeFiles\cpp_database_application_uni_project.dir\Repositories\Implementation\BookRepository.cpp.obj: dyndep
+
+build CMakeFiles\cpp_database_application_uni_project.dir\Repositories\Implementation\LoanRepository.cpp.obj: dyndep
+
+build CMakeFiles\cpp_database_application_uni_project.dir\Service\Implementation\GenreService.cpp.obj: dyndep
+
+build CMakeFiles\cpp_database_application_uni_project.dir\Service\Implementation\BookService.cpp.obj: dyndep
+
+build CMakeFiles\cpp_database_application_uni_project.dir\Service\Implementation\ReaderService.cpp.obj: dyndep
+
+build CMakeFiles\cpp_database_application_uni_project.dir\Service\Implementation\LoanService.cpp.obj: dyndep
+
+build CMakeFiles\cpp_database_application_uni_project.dir\Menus\Implementation\GenreMenu.cpp.obj: dyndep
+
+build CMakeFiles\cpp_database_application_uni_project.dir\Menus\Implementation\BookMenu.cpp.obj: dyndep
+
+build CMakeFiles\cpp_database_application_uni_project.dir\Helpers\Implementation\Helpers.cpp.obj: dyndep
+
+build CMakeFiles\cpp_database_application_uni_project.dir\Menus\Implementation\ReaderMenu.cpp.obj: dyndep
+
+build CMakeFiles\cpp_database_application_uni_project.dir\Menus\Implementation\LoanMenu.cpp.obj: dyndep
+
+build CMakeFiles\cpp_database_application_uni_project.dir\Helpers\Implementation\RepositoryHelpers.cpp.obj: dyndep
+

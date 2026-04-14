@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "CMakeFiles\\cpp_database_application_uni_project.dir\\Repositories\\Implementation\\BookRepository.cpp.obj",
+            "outputs": [
+                "C:\\Users\\korne\\source\\repos\\dotnetblog\\cpp-database-application-uni-project\\out\\build\\x64-Debug\\vc140.pdb",
+                "CMakeFiles\\cpp_database_application_uni_project.dir\\Repositories\\Implementation\\BookRepository.cpp.obj.ddi"
+            ],
+            "requires": []
+        }
+    ]
+}

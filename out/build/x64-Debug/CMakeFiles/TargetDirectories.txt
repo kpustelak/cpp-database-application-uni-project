@@ -1,0 +1,3 @@
+C:/Users/korne/source/repos/dotnetblog/cpp-database-application-uni-project/out/build/x64-Debug/CMakeFiles/cpp_database_application_uni_project.dir
+C:/Users/korne/source/repos/dotnetblog/cpp-database-application-uni-project/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+C:/Users/korne/source/repos/dotnetblog/cpp-database-application-uni-project/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
