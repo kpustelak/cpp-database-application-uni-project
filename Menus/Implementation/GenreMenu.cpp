@@ -5,32 +5,41 @@
 #include "../Header/GenreMenu.h"
 
 #include <iostream>
-#include <limits>
-#include <ostream>
-
 void GenreMenu::AddGenre(GenreService &s) {
+    helpers.ClearScreen();
     std::string genreName = helpers.EnterData("Enter genre name");
     std::string genreDescription = helpers.EnterData("Enter genre description");
     try {
         s.Add(genreName, genreDescription);
         std::cout << "Genre added" << std::endl;
-    } catch (std::invalid_argument& e) {
-        std::cerr << e.what() << std::endl;
+    } catch (std::exception& e) {
+        std::cout << e.what() << std::endl;
     }
     helpers.PressEnterToContinue();
 }
 
 void GenreMenu::FindById(GenreService &s) {
-    int genreId = helpers.EnterInt("Enter genre id");
+    helpers.ClearScreen();
     try {
+        std::vector<Genre> genres = s.GetAll();
+        if (genres.empty()) {
+            std::cout << "No genres found" << std::endl;
+            helpers.PressEnterToContinue();
+            return;
+        }
+        for (auto genre : genres) {
+            std::cout << genre.Id << ". " << genre.Name << std::endl;
+        }
+
+        int genreId = helpers.EnterInt("Enter genre id");
         Genre genre = s.GetById(genreId);
         if (genre.Name.empty()) {
             std::cout << "No genre found" << std::endl;
         } else {
             std::cout << "ID:" << genre.Id << ", NAME:" << genre.Name << ", DESCRIPTION:" << genre.Description << std::endl;
         }
-    } catch (std::invalid_argument& e) {
-        std::cerr << e.what() << std::endl;
+    } catch (std::exception& e) {
+        std::cout << e.what() << std::endl;
     }
     helpers.PressEnterToContinue();
 }
@@ -78,8 +87,8 @@ void GenreMenu::EditGenre(GenreService &s) {
         genreToEdit.Description = genreNewDescription;
         s.Update(genreToEdit);
         std::cout << "Genre updated" << std::endl;
-    } catch (std::invalid_argument& e) {
-        std::cerr << e.what() << std::endl;
+    } catch (std::exception& e) {
+        std::cout << e.what() << std::endl;
     }
     helpers.PressEnterToContinue();
 }
@@ -109,8 +118,8 @@ void GenreMenu::DeleteGenre(GenreService &s) {
     try {
         s.Delete(id);
         std::cout << "Genre deleted" << std::endl;
-    } catch (std::invalid_argument& e) {
-        std::cerr << e.what() << std::endl;
+    } catch (std::exception& e) {
+        std::cout << e.what() << std::endl;
     }
     helpers.PressEnterToContinue();
 }

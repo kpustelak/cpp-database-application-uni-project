@@ -14,7 +14,7 @@ public:
     void ReturnBook(LoanService &l);
     void GetActiveLoans(LoanService &l);
     void GetOverdueLoans(LoanService &l);
-    void GetLoansByReader(LoanService &l);
+    void GetLoansByReader(LoanService &l, ReaderService &r);
 };
 
 #endif

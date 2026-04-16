@@ -7,13 +7,17 @@
 
 #include <vector>
 #include "../../Repositories/Header/LoanRepository.h"
+#include "../../Repositories/Header/ReaderRepository.h"
+#include "../../Repositories/Header/BookRepository.h"
 
 class LoanService {
 private:
     LoanRepository _repository;
+    ReaderRepository _readerRepository;
+    BookRepository _bookRepository;
 
 public:
-    LoanService(PGconn* conn) : _repository(conn) {}
+    LoanService(PGconn* conn) : _repository(conn), _readerRepository(conn), _bookRepository(conn) {}
 
     void Add(int reader_id, int book_copies_id);
     void ReturnBook(int loan_id);

@@ -33,12 +33,27 @@ void BookMenu::AddBook(BookService &b, GenreService &g) {
 
 void BookMenu::GetBookById(BookService &b) {
     helpers.ClearScreen();
-    int bookId = helpers.EnterInt("Enter book id");
-    Book book = b.GetById(bookId);
-    if (book.Id <= 0) {
-        std::cout << "There is no book with this id" << std::endl;
-    } else {
-        std::cout << book.Id << ". " << book.Title << ". " << book.Author << ". " << book.YearOfRelease << std::endl;
+    std::string phrase = helpers.EnterData("Enter title or author to narrow down");
+    try {
+        std::vector<Book> books = b.GetByPhrase(phrase);
+        if (books.empty()) {
+            std::cout << "No books found" << std::endl;
+            helpers.PressEnterToContinue();
+            return;
+        }
+        for (auto book : books) {
+            std::cout << book.Id << ". " << book.Title << ". " << book.Author << ". " << book.YearOfRelease << std::endl;
+        }
+
+        int bookId = helpers.EnterInt("Enter book id");
+        Book book = b.GetById(bookId);
+        if (book.Id <= 0) {
+            std::cout << "There is no book with this id" << std::endl;
+        } else {
+            std::cout << book.Id << ". " << book.Title << ". " << book.Author << ". " << book.YearOfRelease << std::endl;
+        }
+    } catch (std::exception &e) {
+        std::cout << e.what() << std::endl;
     }
     helpers.PressEnterToContinue();
 }
@@ -138,13 +153,17 @@ void BookMenu::DeleteBook(BookService &b) {
 
 void BookMenu::GetBookByName(BookService &b) {
     std::string phraseToLookFor = helpers.EnterData("Enter book title or part of it to find");
-    std::vector<Book> books = b.GetByPhrase(phraseToLookFor);
-    if (books.empty()) {
-        std::cout << "No books found" << std::endl;
-        return;
-    }
-    for (auto book : books) {
-        std::cout << book.Id << ". " << book.Title << ". " << book.Author << ". " << book.YearOfRelease << std::endl;
+    try {
+        std::vector<Book> books = b.GetByPhrase(phraseToLookFor);
+        if (books.empty()) {
+            std::cout << "No books found" << std::endl;
+            return;
+        }
+        for (auto book : books) {
+            std::cout << book.Id << ". " << book.Title << ". " << book.Author << ". " << book.YearOfRelease << std::endl;
+        }
+    } catch (std::exception &e) {
+        std::cout << e.what() << std::endl;
     }
 }
 
@@ -287,14 +306,18 @@ void BookMenu::ShowCopiesMenu(BookService &b) {
             case 2: {
                 helpers.ClearScreen();
                 GetBookByName(b);
-                int bookId = helpers.EnterInt("Enter book id");
-                auto copies = b.GetCopies(bookId);
-                if (copies.empty()) {
-                    std::cout << "No copies found" << std::endl;
-                } else {
-                    for (auto copy : copies) {
-                        std::cout << copy.Id << ". Condition: " << copy.Condition << std::endl;
+                try {
+                    int bookId = helpers.EnterInt("Enter book id");
+                    auto copies = b.GetCopies(bookId);
+                    if (copies.empty()) {
+                        std::cout << "No copies found" << std::endl;
+                    } else {
+                        for (auto copy : copies) {
+                            std::cout << copy.Id << ". Condition: " << copy.Condition << std::endl;
+                        }
                     }
+                } catch (std::exception &e) {
+                    std::cout << e.what() << std::endl;
                 }
                 helpers.PressEnterToContinue();
                 break;

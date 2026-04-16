@@ -8,77 +8,124 @@
 
 void ReaderMenu::AddReader(ReaderService &r) {
     helpers.ClearScreen();
-    std::string Name = helpers.EnterData("Enter reader name");
-    std::string Surname = helpers.EnterData("Enter reader surname");
-    std::string PhoneNumber = helpers.EnterData("Enter reader phone number");
-    std::string Email = helpers.EnterData("Enter reader email");
+    std::string name = helpers.EnterData("Enter reader name");
+    std::string surname = helpers.EnterData("Enter reader surname");
+    std::string phoneNumber = helpers.EnterData("Enter reader phone number");
+    std::string email = helpers.EnterData("Enter reader email");
 
-    r.Add(Name, Surname, PhoneNumber, Email);
-    std::cout<<"User was added to database"<<std::endl;
+    try {
+        r.Add(name, surname, phoneNumber, email);
+        std::cout << "Reader added" << std::endl;
+    } catch (std::exception& e) {
+        std::cout << e.what() << std::endl;
+    }
     helpers.PressEnterToContinue();
 }
 void ReaderMenu::ShowAllReaders(ReaderService &r) {
+    helpers.ClearScreen();
     std::vector<Reader> readers = r.GetAll();
+    if (readers.empty()) {
+        std::cout << "No readers found" << std::endl;
+        helpers.PressEnterToContinue();
+        return;
+    }
     for (auto reader : readers) {
-        std::cout<<reader.Id<<". "<<reader.Name<<" "<<reader.Surname<<" "<<reader.PhoneNumber<<" "<<reader.Email<<std::endl;
+        std::cout << reader.Id << ". " << reader.Name << " " << reader.Surname << " "
+                  << reader.PhoneNumber << " " << reader.Email << std::endl;
     }
     helpers.PressEnterToContinue();
 }
 void ReaderMenu::GetReaderById(ReaderService &r) {
-    int readerId = helpers.EnterInt("Enter reader id to find him");
-    Reader reader = r.GetById(readerId);
-    if (!reader.Name.empty()) {
-        std::cout<<reader.Id<<". "<<reader.Name<<" "<<reader.Surname<<" "<<reader.PhoneNumber<<" "<<reader.Email<<std::endl;
-    }else {
-        std::cout<<"We cant find any matching user"<<std::endl;
+    helpers.ClearScreen();
+    std::string dataToMatch = helpers.EnterData("Enter name or surname to narrow down reader");
+    try {
+        std::vector<Reader> readers = r.GetByPhrase(dataToMatch);
+        if (readers.empty()) {
+            std::cout << "No readers found" << std::endl;
+            helpers.PressEnterToContinue();
+            return;
+        }
+        for (auto reader : readers) {
+            std::cout << reader.Id << ". " << reader.Name << " " << reader.Surname << " "
+                      << reader.PhoneNumber << " " << reader.Email << std::endl;
+        }
+
+        int readerId = helpers.EnterInt("Enter reader id");
+        Reader reader = r.GetById(readerId);
+        if (!reader.Name.empty()) {
+            std::cout << reader.Id << ". " << reader.Name << " " << reader.Surname << " "
+                      << reader.PhoneNumber << " " << reader.Email << std::endl;
+        } else {
+            std::cout << "No reader found with this id" << std::endl;
+        }
+    } catch (std::exception& e) {
+        std::cout << e.what() << std::endl;
     }
     helpers.PressEnterToContinue();
 }
 void ReaderMenu::GetReaderByNameOrSurname(ReaderService &r) {
+    helpers.ClearScreen();
     std::string dataToMatch = helpers.EnterData("Enter name or surname to find reader");
-    std::vector<Reader> readers = r.GetByPhrase(dataToMatch);
-    for (auto reader : readers) {
-        std::cout<<reader.Id<<". "<<reader.Name<<" "<<reader.Surname<<" "<<reader.PhoneNumber<<" "<<reader.Email<<std::endl;
+    try {
+        std::vector<Reader> readers = r.GetByPhrase(dataToMatch);
+        if (readers.empty()) {
+            std::cout << "No readers found" << std::endl;
+            helpers.PressEnterToContinue();
+            return;
+        }
+        for (auto reader : readers) {
+            std::cout << reader.Id << ". " << reader.Name << " " << reader.Surname << " "
+                      << reader.PhoneNumber << " " << reader.Email << std::endl;
+        }
+    } catch (std::exception& e) {
+        std::cout << e.what() << std::endl;
     }
     helpers.PressEnterToContinue();
 }
 void ReaderMenu::EditReader(ReaderService &r) {
     helpers.ClearScreen();
-    std::vector<Reader> readers = r.GetAll();
-    for (auto reader : readers) {
-        std::cout<<reader.Id<<". "<<reader.Name<<" "<<reader.Surname<<std::endl;
-    }
-    int readerToEditInt = helpers.EnterInt("Enter reader id to edit");
     try {
+        std::string phrase = helpers.EnterData("Enter name or surname to find reader");
+        std::vector<Reader> readers = r.GetByPhrase(phrase);
+        if (readers.empty()) {
+            std::cout << "No readers found" << std::endl;
+            helpers.PressEnterToContinue();
+            return;
+        }
+        for (auto existingReader : readers) {
+            std::cout << existingReader.Id << ". " << existingReader.Name << " " << existingReader.Surname << std::endl;
+        }
+
+        int readerToEditInt = helpers.EnterInt("Enter reader id to edit");
         Reader reader = r.GetById(readerToEditInt);
         if (reader.Id == 0) {
             std::cout << "Reader not found" << std::endl;
             helpers.PressEnterToContinue();
             return;
         }
-        std::string Name = reader.Name;
-        std::string Surname = reader.Surname;
-        std::string PhoneNumber = reader.PhoneNumber;
-        std::string Email = reader.Email;
+        std::string name = reader.Name;
+        std::string surname = reader.Surname;
+        std::string phoneNumber = reader.PhoneNumber;
+        std::string email = reader.Email;
         bool isDoneEditing = false;
 
         while (!isDoneEditing) {
             helpers.ClearScreen();
-            std::cout << "Editing: " << Name<< std::endl;
+            std::cout << "Editing: " << name << std::endl;
             std::cout << "1. Name\n2. Surname\n3. Phone number \n4. Email \n 0. Save\n";
             int pickEdit = helpers.EnterInt("Choose");
             switch (pickEdit) {
                 case 1:
-                    Name = helpers.EnterData("Enter new name");
+                    name = helpers.EnterData("Enter new name");
                     break;
                 case 2:
-                    Surname = helpers.EnterData("Enter new surname");
+                    surname = helpers.EnterData("Enter new surname");
                     break;
                 case 3:
-                    PhoneNumber = helpers.EnterData("Enter new phone number");
+                    phoneNumber = helpers.EnterData("Enter new phone number");
                     break;
                 case 4:
-                    Email = helpers.EnterData("Enter new email");
+                    email = helpers.EnterData("Enter new email");
                     break;
                 case 0:
                     isDoneEditing = true;
@@ -87,27 +134,45 @@ void ReaderMenu::EditReader(ReaderService &r) {
                     std::cout << "Unknown option" << std::endl;
             }
         }
-        r.Update(reader.Id, Name, Surname, PhoneNumber, Email);
-        helpers.PressEnterToContinue();
+        r.Update(reader.Id, name, surname, phoneNumber, email);
+        std::cout << "Reader updated" << std::endl;
     }catch (std::exception& e) {
-        std::cout<<e.what()<<std::endl;
+        std::cout << e.what() << std::endl;
     }
+    helpers.PressEnterToContinue();
 }
 void ReaderMenu::DeleteReader(ReaderService &r) {
     helpers.ClearScreen();
-    std::vector<Reader> readers = r.GetAll();
-    for (auto reader : readers) {
-        std::cout<<reader.Id<<". "<<reader.Name<<" "<<reader.Surname<<std::endl;
-    }
-    int readerToDeleteInt = helpers.EnterInt("Enter reader id to delete");
-    Reader reader = r.GetById(readerToDeleteInt);
-    if (reader.Name.empty()) {
-        std::cout << "Reader not found" << std::endl;
-        return;
-    }else {
-        if (helpers.Confirm("Are you sure you want to delete reader?")) {
-            r.Delete(reader.Id);
+    try {
+        std::string phrase = helpers.EnterData("Enter name or surname to find reader");
+        std::vector<Reader> readers = r.GetByPhrase(phrase);
+        if (readers.empty()) {
+            std::cout << "No readers found" << std::endl;
+            helpers.PressEnterToContinue();
+            return;
         }
+        for (auto reader : readers) {
+            std::cout << reader.Id << ". " << reader.Name << " " << reader.Surname << std::endl;
+        }
+
+        int readerToDeleteInt = helpers.EnterInt("Enter reader id to delete");
+        Reader reader = r.GetById(readerToDeleteInt);
+        if (reader.Name.empty()) {
+            std::cout << "Reader not found" << std::endl;
+            helpers.PressEnterToContinue();
+            return;
+        }
+
+        if (!helpers.Confirm("Are you sure you want to delete reader?")) {
+            std::cout << "Cancelled" << std::endl;
+            helpers.PressEnterToContinue();
+            return;
+        }
+
+        r.Delete(reader.Id);
+        std::cout << "Reader deleted" << std::endl;
+    } catch (std::exception& e) {
+        std::cout << e.what() << std::endl;
     }
     helpers.PressEnterToContinue();
 }

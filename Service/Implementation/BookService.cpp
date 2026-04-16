@@ -7,6 +7,10 @@
 #include <stdexcept>
 
 void BookService::Add(const std::string& title, const std::string& author, int yearOfRelease, const std::string& locationCode, int genreId) {
+    if (title.empty() || author.empty() || locationCode.empty() || yearOfRelease <= 0 || genreId <= 0) {
+        throw std::invalid_argument("Invalid book payload");
+    }
+
     Genre g = _genreRepository.findById(genreId);
     if (g.Id == 0) { throw std::runtime_error("No genre found"); }
 
@@ -15,6 +19,9 @@ void BookService::Add(const std::string& title, const std::string& author, int y
 }
 
 Book BookService::GetById(int id) {
+    if (id <= 0) {
+        throw std::invalid_argument("Book id must be greater than 0");
+    }
     return _repository.findById(id);
 }
 
@@ -23,19 +30,37 @@ std::vector<Book> BookService::GetAll() {
 }
 
 void BookService::Update(int id, const std::string& title, const std::string& author, int yearOfRelease, const std::string& locationCode, int genreId) {
+    if (id <= 0 || title.empty() || author.empty() || locationCode.empty() || yearOfRelease <= 0 || genreId <= 0) {
+        throw std::invalid_argument("Invalid book payload");
+    }
+
     if (!_repository.doesBookExist(id)) {
         throw std::runtime_error("No book found");
-    } else {
-        Book newBookVersion = Book(id, title, author, yearOfRelease, locationCode, genreId);
-        _repository.update(newBookVersion);
     }
+
+    Genre g = _genreRepository.findById(genreId);
+    if (g.Id == 0) {
+        throw std::runtime_error("No genre found");
+    }
+
+    Book newBookVersion = Book(id, title, author, yearOfRelease, locationCode, genreId);
+    _repository.update(newBookVersion);
 }
 
 void BookService::Delete(int id) {
+    if (id <= 0) {
+        throw std::invalid_argument("Book id must be greater than 0");
+    }
     _repository.deleteById(id);
 }
 
 void BookService::AddCopy(int book_id, const std::string& condition) {
+    if (book_id <= 0) {
+        throw std::invalid_argument("Book id must be greater than 0");
+    }
+    if (!_repository.isConditionValid(condition)) {
+        throw std::invalid_argument("Invalid copy condition");
+    }
     if (!_repository.doesBookExist(book_id)) {
         throw std::runtime_error("No book found");
     }
@@ -51,14 +76,26 @@ void BookService::UpdateCopy(int copy_id, const std::string& condition) {
 }
 
 void BookService::DeleteCopy(int copy_id) {
+    if (copy_id <= 0) {
+        throw std::invalid_argument("Copy id must be greater than 0");
+    }
+    if (!_repository.doesCopyExist(copy_id)) {
+        throw std::runtime_error("No copy found");
+    }
     _repository.deleteCopy(copy_id);
 }
 
 std::vector<BookCopy> BookService::GetCopies(int book_id) {
+    if (book_id <= 0) {
+        throw std::invalid_argument("Book id must be greater than 0");
+    }
     return _repository.findCopiesByBookId(book_id);
 }
 
 std::vector<Book> BookService::GetByPhrase(const std::string& phraseToLookFor) {
+    if (phraseToLookFor.empty()) {
+        throw std::invalid_argument("Search phrase cannot be empty");
+    }
     std::vector<Book> allBooks = _repository.findAll();
     std::vector<Book> matches;
     for (const auto& book : allBooks) {
